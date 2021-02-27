@@ -1,5 +1,6 @@
 sgd_venv/
 data/
+CCPP/
 
 __pycache__/
 *.py[cod]
