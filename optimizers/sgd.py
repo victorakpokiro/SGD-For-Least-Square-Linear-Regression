@@ -6,16 +6,14 @@ class SGD(object):
         super(SGD, self).__init__()
         self.lr = lr
 
-    def sgd( self ,X,y, weights, bias, batch_size, func):
-        #print(X.shape, weights.shape, bias.shape)
 
-        y_predicted = np.dot(X, weights) + bias
+    def sgd( self ,X,y, weights, bias, batch_size, func):
+
         indexes = np.random.randint(0, len(X), batch_size)
-        #print(indexes,X.shape)
-        #Xs = np.take(X, indexes)
         Xs = X[indexes]
 
-        ys = np.take(y, indexes)
+        #ys = np.take(y, indexes)
+        ys = y[indexes]
         N = len(Xs)
         y_predicted = func(Xs, weights, bias)
         dw = (1/N) * 2* np.dot(Xs.T, (y_predicted - ys))
@@ -23,5 +21,6 @@ class SGD(object):
 
         weights -= self.lr * dw
         bias -= self.lr * db
+        y_predicted = func(Xs, weights, bias)
 
-        return weights, bias
+        return weights, bias , y_predicted, ys

@@ -10,7 +10,7 @@ from utils.file_types import File_type
 from utils.constants import data_url
 import os
 from utils.misc import Normalization, Metrics
-
+from utils.plot import Plot
 
 
 def import_power_plant_data():
@@ -37,19 +37,24 @@ def init_data():
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2,shuffle=True, random_state=1234)
     print(X_train.shape, X_test.shape, y_train.shape, y_test.shape)
     opt = SGD(lr=0.01)
-    regressor = LinearRegression(opt, epoch=10000)
-    regressor.fit(X_train, y_train)
+    epoch = 10000
+    regressor = LinearRegression(opt, epoch=epoch)
+    x_plot = list(range(1,epoch+1))
+    all_mse = regressor.fit(X_train, y_train)
     predicted = regressor.predict(X_test)
     #print(len(predicted))
     #exit()
     mse_value = Metrics.mse(y_test, predicted)
-    print(mse_value)
+    #print(len(x_plot), len(all_mse))
+    #print(mse_value)
     #y_pred_line = regressor.predict(X)
     #cmap = plt.get_cmap('viridis')
     #fig = plt.figure(figsize=(8,6))
     #m1 = plt.scatter(X_train, y_train, color=cmap(0.9), s=10)
     #m2 = plt.scatter(X_test, y_test, color=cmap(0.5), s=10)
-    #plt.plot(X, y_pred_line, color = "black", linewidth=2, label="Predicted")
+    #plt.plot(x_plot, all_mse, color = "blue", linewidth=2)
+    Plot.plot_time_series(x_plot, all_mse, "mse_plot", "number of iterations", "Mean Square Error (MSE)", "MSE vs Number of iterations")
+
     plt.show()
 
 def main():
